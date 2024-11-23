@@ -1,0 +1,22 @@
+name: Assign Label to In Progress
+
+on:
+  issues:
+    types:
+      - assigned
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add 'In progress' label to the assigned issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.NEWTOKEN6 }}
+        run: |
+          echo "Adding 'In progress' label to issue #${{ github.event.issue.number }}..."
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
+            -d '{"labels":["In progress"]}'
